@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Electric Charging Stations</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #333;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        /* Main Container Styling */
+        .container {
+
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 100px;
+            padding: 60px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Text Section */
+        .text-section {
+            text-align: center;
+        }
+
+        .text-section h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* Button Styling */
+        .btn, .btn2 {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover, .btn2:hover {
+            background-color: #45a049;
+        }
+
+        /* Form Containers */
+        .form-container {
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-box {
+            width: 80%;
+            padding: 30px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .form-box h2, .form-box h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin-top: 0;
+        }
+
+        /* Form Elements */
+        label {
+            font-size: 16px;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+
+        /* Modal Styles */
+        #confirmation-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            margin: auto;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover, .close-button:focus {
+            color: #000;
+        }
+        .btn{
+            margin-left: 40px;
+        }
+        .btn2{
+            margin-bottom: 20px;
+        }
+        
+    
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="#mapSection">Maps</a>
+        <a href="#searchForm">Book a Slot</a>
+        <a href="#booking-modal" onclick="viewBooking()">My Bookings</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container" id="mapSection">
+        <div class="text-section">
+            <h1>Electric Charging Stations Near You</h1>
+        </div>
+        <div class="leftside">
+            <div class="img">
+                <img id="maps-logo" src="maps.png" alt="Google Maps Icon" width="300" >
+            </div>
+            <button class="btn" id="findStations">Find Charging Stations</button>
+        </div>
+    </div>
+
+    <!-- Form Containers -->
+    <div class="form-box">
+        <h3>Estimate Charging Time</h3>
+        
+        <label for="batteryCapacity">Select Battery Capacity (kWh):</label>
+        <select id="batteryCapacity">
+            <option value="40">40 kWh</option>
+            <option value="50">50 kWh</option>
+            <option value="60">60 kWh</option>
+            <option value="75">75 kWh</option>
+            <option value="100">100 kWh</option>
+        </select>
+    
+        <label for="batteryPercentage">Current Battery Percentage:</label>
+        <input type="number" id="batteryPercentage" placeholder="Enter battery percentage (0-100)" min="0" max="100" required>
+    
+        <button type="button" id="calculateChargeTimeBtn" class="btn2">Calculate Charge Time</button>
+        <br>
+    
+        <label for="chargeTime">Estimated Time to Full Charge:</label>
+        <input type="text" id="chargeTime" readonly>
+    </div>
+
+        <!-- Search and Book Slot Box -->
+        <div class="form-box">
+            <h2>Search and Book a Slot</h2>
+            <form id="searchForm" onsubmit="return false;">
+                <label for="locationSelect">Select Location:</label>
+                <select id="locationSelect" required>
+                    <option value="">Loading locations...</option>
+                </select>
+                <button type="button" class="btn2" id="fetchStationsBtn">Fetch Stations</button>
+            </form>
+
+            <h3>Available Stations</h3>
+            <select id="stationSelect" required style="display:none;">
+                <option value="">Select a station...</option>
+            </select>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" readonly>
+
+            <label for="slotsAvailable">Slots Available:</label>
+            <input type="text" id="slotsAvailable" readonly>
+
+            <label for="stationStatus">Station Status:</label>
+            <input type="text" id="stationStatus" readonly>
+
+            <button id="bookSlotBtn" class="btn2" style="display:none;">Book Slot</button>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-modal">&times;</span>
+            <h2>Booking Confirmation</h2>
+            <p id="confirmation-details"></p>
+            <button id="confirm-booking" class="btn2">Confirm Booking</button>
+        </div>
+    </div>
+
+                <!-- Booking Modal -->
+<div id="booking-modal" style=" margin-top: 100px; margin-bottom: 100px; width: 620px;">
+    <div class="modal-content">
+        <span class="close-button" id="close-booking-modal">&times;</span>
+        <h2>My Bookings</h2>
+        <p id="booking-details">No bookings yet.</p>
+    </div>
+</div>
+
+<script>
+    document.getElementById("findStations").addEventListener("click", function() {
+        window.open("https://www.google.com/maps/search/?api=1&query=EV+charging+stations+near+me");
+    });
+
+    function logout() {
+            alert("Logged out successfully!");
+            window.location.href = "login.html"; // Redirect to login page
+        }
+    async function fetchLocations() {
+        try {
+            const response = await fetch('http://localhost:3000/locations'); // Fetch locations from the server
+            const locations = await response.json();
+
+            const locationSelect = document.getElementById('locationSelect'); // Reference to your location dropdown
+            locationSelect.innerHTML = '<option value="">Select a location...</option>'; // Clear existing options
+
+            // Add locations to the dropdown
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                option.textContent = location; // Use location name as the text
+                locationSelect.appendChild(option);
+            });
+
+        } catch (error) {
+            console.error('Error fetching locations:', error);
+            alert('Failed to load locations. Please try again later.');
+        }
+    }
+
+    async function fetchStations(location) {
+        try {
+            const response = await fetch(`http://localhost:3000/stations/location/${location}`);
+            const stations = await response.json();
+
+            const stationSelect = document.getElementById('stationSelect');
+            stationSelect.innerHTML = '<option value="">Select a station...</option>'; // Clear existing options
+            stationSelect.style.display = 'block'; // Show the station select dropdown
+
+            // Add stations to the dropdown
+            stations.forEach(station => {
+                const option = document.createElement('option');
+                option.value = station._id; // Use station ID as the value
+                option.dataset.slotsAvailable = station.slotsAvailable; // Store slots available
+                option.dataset.status = station.status; // Store station status
+                option.textContent = station.name; // Use station name as text
+                stationSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching stations:', error);
+            alert('Failed to load stations. Please try again later.');
+        }
+    }
+
+    // Call fetchLocations on page load
+    fetchLocations();
+
+    // Event listener for fetching stations when the button is clicked
+    document.getElementById('fetchStationsBtn').addEventListener('click', function() {
+        const selectedLocation = document.getElementById('locationSelect').value;
+        if (selectedLocation) {
+            fetchStations(selectedLocation); // Fetch stations for selected location
+        }
+    });
+
+    // Event listener for when a station is selected
+    document.getElementById('stationSelect').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.value) {
+            document.getElementById('location').value = document.getElementById('locationSelect').value; // Show location
+            document.getElementById('slotsAvailable').value = selectedOption.dataset.slotsAvailable; // Show slots available
+            document.getElementById('stationStatus').value = selectedOption.dataset.status; // Show station status
+            document.getElementById('bookSlotBtn').style.display = 'inline-block'; // Show book slot button
+        } else {
+            document.getElementById('location').value = '';
+            document.getElementById('slotsAvailable').value = '';
+            document.getElementById('stationStatus').value = '';
+            document.getElementById('bookSlotBtn').style.display = 'none'; // Hide book slot button
+        }
+    });
+
+    // Event listener for booking slot
+    document.getElementById('bookSlotBtn').addEventListener('click', function() {
+        // Fetch station details for confirmation
+        const selectedStation = document.getElementById('stationSelect').options[document.getElementById('stationSelect').selectedIndex];
+        const location = document.getElementById('location').value;
+        const slotsAvailable = document.getElementById('slotsAvailable').value;
+        const stationStatus = document.getElementById('stationStatus').value;
+        const stationName = selectedStation.textContent;
+
+        const confirmationDetails = `
+            Station: ${stationName}<br>
+            Location: ${location}<br>
+            Slots Available: ${slotsAvailable}<br>
+            Status: ${stationStatus}
+        `;
+        document.getElementById('confirmation-details').innerHTML = confirmationDetails;
+
+        // Show the confirmation modal
+        document.getElementById('confirmation-modal').style.display = 'block';
+    });
+
+    // Event listener for closing the modal
+    document.getElementById('close-modal').addEventListener('click', function() {
+        document.getElementById('confirmation-modal').style.display = 'none';
+    });
+
+    // Event listener for confirming the booking
+    document.getElementById('confirm-booking').addEventListener('click', function() {
+        alert('Your booking has been confirmed!');
+        document.getElementById('confirmation-modal').style.display = 'none';
+        // Here, you can add code to handle the booking in your backend
+    });
+
+    // Close the modal when clicking anywhere outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('confirmation-modal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+
+    document.getElementById("findStations").addEventListener("click", function() {
+        window.open("https://www.google.com/maps/search/?api=1&query=EV+charging+stations+near+me");
+    });
+
+    // Constants for battery capacity and charging rate
+    const chargingRate = 22; // Charging rate in kW
+
+    function calculateChargeTime() {
+        const batteryCapacity = parseFloat(document.getElementById('batteryCapacity').value);
+        const batteryPercentage = parseFloat(document.getElementById('batteryPercentage').value);
+        
+        // Check if the input is valid
+        if (isNaN(batteryPercentage) || batteryPercentage < 0 || batteryPercentage > 100) {
+            alert("Please enter a valid battery percentage between 0 and 100.");
+            return;
+        }
+        
+        // Calculate the remaining percentage to charge
+        const remainingPercentage = (100 - batteryPercentage) / 100; // as a decimal
+        const timeToChargeInHours = (batteryCapacity * remainingPercentage) / chargingRate; // time in hours
+
+        // Convert hours to hours and minutes
+        const hours = Math.floor(timeToChargeInHours);
+        const minutes = Math.round((timeToChargeInHours - hours) * 60); // Convert fractional hours to minutes
+
+        // Update the charge time display
+        document.getElementById('chargeTime').value = `${hours} hours and ${minutes} minutes`;
+    }
+
+    document.getElementById('calculateChargeTimeBtn').addEventListener('click', calculateChargeTime);
+
+    let userBooking = null; // Global variable to store user's booking details
+
+// Event listener to book a slot
+document.getElementById('confirm-booking').addEventListener('click', function() {
+    const selectedStation = document.getElementById('stationSelect').options[document.getElementById('stationSelect').selectedIndex];
+    const location = document.getElementById('location').value;
+    const slotsAvailable = document.getElementById('slotsAvailable').value;
+    const stationName = selectedStation.textContent;
+
+    // Save booking details
+    userBooking = {
+        stationName: stationName,
+        location: location,
+        slotsAvailable: slotsAvailable,
+        status: document.getElementById('stationStatus').value,
+    };
+
+
+    document.getElementById('confirmation-modal').style.display = 'none';
+});
+
+// Function to view booking
+function viewBooking() {
+    const modal = document.getElementById('booking-modal');
+    const bookingDetails = document.getElementById('booking-details');
+
+    if (userBooking) {
+        // Display booking details
+        bookingDetails.innerHTML = `
+            <strong>Station:</strong> ${userBooking.stationName}<br>
+            <strong>Location:</strong> ${userBooking.location}<br>
+            <strong>Slots Available:</strong> ${userBooking.slotsAvailable}<br>
+            <strong>Status:</strong> ${userBooking.status}
+        `;
+    } else {
+        // No bookings made yet
+        bookingDetails.innerText = 'No bookings yet.';
+    }
+
+    // Show modal
+    modal.style.display = 'flex';
+}
+
+// Close the booking modal
+document.getElementById('close-booking-modal').addEventListener('click', function() {
+    document.getElementById('booking-modal').style.display = 'none';
+});
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('booking-modal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+};
+
+
+
+</script>
+
+</body>
+</html>
