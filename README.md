@@ -1,7 +1,6 @@
 # EV-WebApp
-# EV Charging Station Finder and Slot Booking System
 
-![EV Charging](https://via.placeholder.com/1200x400?text=EV+Charging+System)  
+![EV Charging Station Finder and Slot Booking System](https://via.placeholder.com/1200x400?text=EV+Charging+System)  
 A web-based application to find nearby electric vehicle (EV) charging stations, book charging slots, and make payments securely. This platform aims to make the charging process more accessible and efficient for EV owners.
 
 ---
@@ -13,14 +12,6 @@ A web-based application to find nearby electric vehicle (EV) charging stations, 
 - **Real-time Updates**: Live status of charging slots and availability.
 - **User Profiles**: Create accounts to manage bookings and transaction history.
 - **Station Management**: Admin panel for charging station operators to manage bookings and monitor station performance.
-
----
-
-## Demo
-
-![Demo](https://via.placeholder.com/1200x600?text=EV+Charging+Booking+Demo)  
-You can watch the demo of how the system works.  
-[Click here to watch the demo video](#).
 
 ---
 
@@ -61,7 +52,8 @@ You can watch the demo of how the system works.
 
     - For the backend:
       ```bash
-      npm start
+      cd backend
+      node server.js
       ```
 
 6. Visit `http://localhost:3000` in your browser to access the application.
@@ -85,7 +77,6 @@ EV-WebApp/
 ├── backend/
 │   └──server.js/            # Backend logic and API 
 │   
-│
 ├── frontend/                # HTML, CSS, and JavaScript frontend code
 │   ├── Login.html           # Login page with HTML, CSS, and JavaScript
 │   ├── User.html            # User page with HTML, CSS, and JavaScript
