@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Manage Stations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 20px;
+            margin-right: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button.delete {
+            background-color: #f44336;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .navbar {
+            display: flex;
+            position: fixed;
+            top: 0;
+            width: 100vmax;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #333;
+            padding: 10px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#main">Add Station</a>
+        <a href="#stationSection">Update/Delete Stations</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </div>
+    <div id="main"></div>
+    <br>
+    <br>
+
+    <div class="container">
+        <h1 id="stationSection">Manage Charging Stations</h1>
+        <button onclick="openAddModal()">Add New Station</button>
+        <table id="stationsTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Slots Available</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Add Station Modal -->
+    <div class="modal" id="addModal">
+        <h2>Add New Station</h2>
+        <form id="addForm">
+            <label for="addName">Name:</label>
+            <input type="text" id="addName" required><br><br>
+
+            <label for="addLocation">Location:</label>
+            <input type="text" id="addLocation" required><br><br>
+
+            <label for="addSlots">Slots Available:</label>
+            <input type="number" id="addSlots" required><br><br>
+
+            <label for="addStatus">Status:</label>
+            <select id="addStatus" required>
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+            </select><br><br>
+
+            <button type="submit">Add Station</button>
+            <button type="button" onclick="closeAddModal()">Cancel</button>
+        </form>
+    </div>
+
+    <!-- Edit Station Modal -->
+    <div class="modal" id="editModal">
+        <h2>Edit Station</h2>
+        <form id="editForm">
+            <input type="hidden" id="stationId">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required><br><br>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" required><br><br>
+
+            <label for="slots">Slots Available:</label>
+            <input type="number" id="slots" required><br><br>
+
+            <label for="status">Status:</label>
+            <select id="status" required>
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+            </select><br><br>
+
+            <button type="submit">Save</button>
+            <button type="button" onclick="closeEditModal()">Cancel</button>
+        </form>
+    </div>
+    <script>
+        async function loadStations() {
+            try {
+                const response = await fetch('http://localhost:3000/stations');
+                if (!response.ok) throw new Error('Failed to load stations');
+
+                const stations = await response.json();
+                const tableBody = document.querySelector('#stationsTable tbody');
+                tableBody.innerHTML = '';
+
+                stations.forEach(station => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${station.name}</td>
+                        <td>${station.location}</td>
+                        <td>${station.slotsAvailable}</td>
+                        <td>${station.status}</td>
+                        <td>
+                            <button onclick="openEditModal('${station._id}', '${station.name}', '${station.location}', '${station.slotsAvailable}', '${station.status}')">Edit</button>
+                            <button class="delete" onclick="deleteStation('${station._id}')">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading stations:', error);
+                alert('Failed to load stations.');
+            }
+        }
+
+        function openAddModal() {
+            document.getElementById('addModal').style.display = 'block';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+        }
+
+        function openEditModal(id, name, location, slots, status) {
+            document.getElementById('stationId').value = id;
+            document.getElementById('name').value = name;
+            document.getElementById('location').value = location;
+            document.getElementById('slots').value = slots;
+            document.getElementById('status').value = status;
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        document.getElementById('addForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newStation = {
+                name: document.getElementById('addName').value,
+                location: document.getElementById('addLocation').value,
+                slotsAvailable: document.getElementById('addSlots').value,
+                status: document.getElementById('addStatus').value,
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/stations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newStation),
+                });
+
+                if (response.ok) {
+                    alert('Station added successfully');
+                    closeAddModal();
+                    loadStations();
+                } else {
+                    throw new Error('Failed to add station');
+                }
+            } catch (error) {
+                console.error('Error adding station:', error);
+                alert('Failed to add station.');
+            }
+        });
+
+        document.getElementById('editForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('stationId').value;
+            const updatedStation = {
+                name: document.getElementById('name').value,
+                location: document.getElementById('location').value,
+                slotsAvailable: document.getElementById('slots').value,
+                status: document.getElementById('status').value,
+            };
+
+            try {
+                const response = await fetch(`http://localhost:3000/stations/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedStation),
+                });
+
+                if (response.ok) {
+                    alert('Station updated successfully');
+                    closeEditModal();
+                    loadStations();
+                } else {
+                    throw new Error('Failed to update station');
+                }
+            } catch (error) {
+                console.error('Error updating station:', error);
+                alert('Failed to update station.');
+            }
+        });
+
+        async function deleteStation(id) {
+            try {
+                const response = await fetch(`http://localhost:3000/stations/${id}`, { method: 'DELETE' });
+
+                if (response.ok) {
+                    alert('Station deleted successfully');
+                    loadStations();
+                } else {
+                    throw new Error('Failed to delete station');
+                }
+            } catch (error) {
+                console.error('Error deleting station:', error);
+                alert('Failed to delete station.');
+            }
+        }
+        function logout() {
+            alert("Logged out successfully!");
+            window.location.href = "login.html"; // Redirect to login page
+        }
+        loadStations();
+    </script>
+</body>
+</html>
