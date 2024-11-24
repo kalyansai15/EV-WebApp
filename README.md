@@ -86,13 +86,32 @@ EV-WebApp/
 └── README.md                 # This file
 ```
 
-#Screenshots
+# Screenshots
 
-User page 
-![image](https://github.com/user-attachments/assets/e9bdf8cf-ad5f-4579-aa70-39387c73dd94)
+## Login page
+![image](https://github.com/user-attachments/assets/664fb3dc-bff9-4135-a111-5927d4cf68dd)
+
+## User Page 
+![image](https://github.com/user-attachments/assets/9e40b164-ddc0-4ad8-9da5-3cc32c313fcb)
 
 ![image](https://github.com/user-attachments/assets/c855e639-ec0e-4b9f-8b77-5f91f06682a4)
 
 ![image](https://github.com/user-attachments/assets/e8d7d4b9-05bd-4c6e-ae9d-f5a10190deca)
+
+## Admin Page
+![image](https://github.com/user-attachments/assets/38b47923-819e-4f42-bd8d-b67e91a65231)
+
+![image](https://github.com/user-attachments/assets/603bcf8c-fc45-4251-8eb9-9372345f6fc8)
+
+# Contributing
+
+We welcome contributions from the community! If you'd like to improve or add features to this project, feel free to fork the repository, make your changes, and submit a pull request. Please ensure that your code adheres to the project's coding standards and is well-documented.
+
+# Acknowledgments
+- ** Google Maps API for geolocation and station search.
+- ** HTML, CSS, and JavaScript for building the user interface.
+- ** Node.js and Express.js for building the backend server.
+- ** MongoDB for storing data.
+
 
 
