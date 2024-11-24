@@ -1,0 +1,118 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+
+    <title>Login</title>  
+    <style>  
+        .container{  
+            padding-left: 60px;
+            font-family: Arial, sans-serif;  
+            background-color: white;  
+            display: flex;
+            justify-content: center;  
+            align-items: center;  
+            padding-top: 90px;
+        }  
+        
+        .login-container {  
+            background: white;  
+            padding: 20px;  
+            border-radius: 5px;  
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);  
+            width: 320px; 
+            padding-bottom: 60px; 
+        }  
+        h2 {  
+            margin-bottom: 20px;  
+        }  
+        input[type="email"],  
+        input[type="password"] {  
+            width: 100%;  
+            padding: 10px;  
+            margin: 10px 0;  
+        } 
+        .emp{
+            background: #ffffff;   
+            width: 300px;
+        }
+        button {  
+            width: 320px;  
+            padding: 10px;  
+            background-color: #4CAF50;  
+            color: white;  
+            border: none;  
+            border-radius: 5px;  
+            cursor: pointer;  
+        }  
+        button:hover {  
+            background-color: #45a049;  
+        } 
+        body{
+            font-family: Arial, sans-serif;  
+            background-color: white;  
+            text-align: center;
+        }
+        .main{
+            margin-right: 300px;
+            display: flex;
+            justify-content:space-evenly;
+        }
+        .logo{
+            padding-left: 20px;
+        }
+    </style>  
+</head>  
+<body>
+    <div class="heading">
+        <h1>
+            Welcome to Ev App
+        </h1>
+    </div>
+    <div class="main">
+    <div class="logo">
+        <img src="ev2.avif" alt="" width="620px">
+    </div>
+    
+    <div class="container">
+        <div class="login-container">  
+            <h1>Login</h1>  
+            <form class="emp" id="loginForm">  
+                <input type="email" id="email" placeholder="Enter your email" required>  
+                <input type="password" id="password" placeholder="Enter your password" required>  
+                <button type="submit">Login</button>  
+            </form>  
+            <p id="message"></p>  
+        </div>
+    </div> 
+  
+</div>
+  
+
+<script>  
+    document.getElementById("loginForm").addEventListener("submit", async function(event) {  
+        event.preventDefault();  
+
+        const email = document.getElementById('email').value;  
+        const password = document.getElementById('password').value; // For this example, password is not checked  
+
+        // For demo purposes, define roles based on email patterns  
+        const isUser = email.endsWith('@user.com');  
+        const isAdmin = email.endsWith('@admin.com');  
+
+        if (isUser) {  
+            // Redirect to the main page for users  
+            window.location.href = "index.html"; // Replace with your main page URL  
+        } else if (isAdmin) {  
+            // Redirect to an empty admin page  
+            window.location.href = "admin.html"; // Replace with the admin page URL  
+        } else {  
+            // Display message for incorrect email  
+            document.getElementById('message').innerText = 'Invalid email format.';  
+        }  
+    });  
+</script>  
+
+</body>  
+</html>
