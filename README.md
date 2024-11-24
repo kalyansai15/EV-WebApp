@@ -84,3 +84,15 @@ EV-WebApp/
 │   ├── Admin.html           # Admin page with HTML, CSS, and JavaScript
 │
 └── README.md                 # This file
+```
+
+#Screenshots
+
+User page 
+![image](https://github.com/user-attachments/assets/e9bdf8cf-ad5f-4579-aa70-39387c73dd94)
+
+![image](https://github.com/user-attachments/assets/c855e639-ec0e-4b9f-8b77-5f91f06682a4)
+
+![image](https://github.com/user-attachments/assets/e8d7d4b9-05bd-4c6e-ae9d-f5a10190deca)
+
+
