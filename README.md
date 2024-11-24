@@ -1,7 +1,7 @@
 # EV-WebApp
 
-![EV Charging Station Finder and Slot Booking System](https://via.placeholder.com/1200x400?text=EV+Charging+System)  
-A web-based application to find nearby electric vehicle (EV) charging stations, book charging slots, and make payments securely. This platform aims to make the charging process more accessible and efficient for EV owners.
+![EV Charging Station Finder and Slot Booking System](https://via.placeholder.com/1200x400?text=EV+Charging+Station+Finder+and+Slot+Booking+System)  
+A web-based application to find nearby electric vehicle (EV) charging stations and book charging slots. This platform aims to make the charging process more accessible and efficient for EV owners.
 
 ---
 
